@@ -14,7 +14,8 @@
 class DSString : public DSVector<char>
 {
 
-    // private:
+private:
+
 
 public:
     /**
@@ -32,6 +33,7 @@ public:
     // we need to implement this.
     DSString(const char *);
 
+    size_t getSize();
     /**
      * Overloaded Assignment Operators
      * See: https://en.cppreference.com/w/cpp/language/operators

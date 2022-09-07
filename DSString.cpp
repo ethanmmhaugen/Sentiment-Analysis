@@ -17,6 +17,7 @@ DSString::DSString(const char *x)
     }
 }
 
+
 DSString &DSString::operator=(const char *rhs)
 {
     size_t size = strlen(rhs);
@@ -32,8 +33,16 @@ DSString &DSString::operator=(const char *rhs)
 
 DSString DSString::operator+(const DSString &rhs) const
 {
-    cerr << *this << " + " << rhs << " not implemented!" << endl;
+    //cerr << *this << " + " << rhs << " not implemented!" << endl;
     DSString tmp;
+    size_t size = rhs.size()+this.size();
+    size_t oldsize = this.size();
+    this.resize(size);
+
+    for (size_t i = oldsize; i < size; ++i)
+    {
+        (*this)[i] = rhs[i];
+    }
     return tmp;
 }
 

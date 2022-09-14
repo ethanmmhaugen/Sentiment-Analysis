@@ -1,49 +1,32 @@
-//
-// Based on DSString by Mark Fontenot
-//
-
 #ifndef DSSTRING_H
 #define DSSTRING_H
-
 #include "DSVector.h"
-
 #include <iostream>
 
-// Note: you can also add functionality to DSVector.h
-
-class DSString : public DSVector<char>
+class DSString: public DSVector<char>
 {
 
 private:
-
-
+    char * data;  // a pointer to a character array containing the string
+    int len;      // the length of the string 
+    DSVector array;
 public:
     /**
-     * Constructors and destructor call the base class
-     *
-     * Make sure you use proper memory management.
+     * Make sure you implement the rule of 3 and use proper memory management.
+     * To help you get started, you can implement the following:
      **/
 
-    // we get those from DSVector by using default in C++11
-    DSString() = default;
-    DSString(const DSString &) = default;
-    DSString(DSString &&rhs) = default;
-    ~DSString() = default;
+    DSString();
+    DSString(const char *); // constructor that converts a cstring
+    
+    // rule of 3
+    DSString(const DSString & rhs);  // copy constructor
+    ~DSString();  // destructor
+    DSString &operator=(const DSString &);
 
-    // we need to implement this.
-    DSString(const char *);
+    // you can also implement the move versions for the big 5 (C+11)
 
-    size_t getSize();
-    /**
-     * Overloaded Assignment Operators
-     * See: https://en.cppreference.com/w/cpp/language/operators
-     */
-    // these are already provided by DSVector (default in C++11)
-    DSString &operator=(const DSString &) = default;
-    DSString &operator=(DSString &&) = default;
-
-    // we need to add this.
-    DSString &operator=(const char *);
+    // implement some useful methods
 
     /**
      * Overloaded non-modifying string concat
@@ -51,7 +34,8 @@ public:
     DSString operator+(const DSString &) const;
 
     /**
-     * Standard relational operators.  Feel free to add additional.
+     * Standard relational operators to compare and order your strings.  
+     * Feel free to add additional.
      **/
     bool operator==(const DSString &) const;
     bool operator<(const DSString &) const;
@@ -71,9 +55,7 @@ public:
      * the c_str function returns a pointer a null-terminated c-string holding the
      * contents of this object. It would be smart to always have an extra `\0`
      * at the end of the string in DSString so you can just return a pointer to the
-     * objects. You can make objects protected in DSVector, so
-     * DSString can see it or you can realize that an iterator is actually also a
-     * pointer.
+     * objects. 
      **/
     const char *c_str() const;
 
@@ -87,7 +69,7 @@ public:
 
     // You are free to add more functionality to the class.  For example,
     // you may want to add a find(...) function that will search for a
-    // string within a string.  (just an example)
+    // substring within a string or a function that breaks a string into words.
 };
 
 #endif

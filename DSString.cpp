@@ -6,17 +6,36 @@
 #include <string.h>
 #include <stdexcept>
 
+DSString::DSString(){
+}
+
 DSString::DSString(const char *x)
 {
-    size_t size = strlen(x);
-    resize(size);
+    array = DSVector(strlen(x));
+    for(size_t i = 0; i<array.capacity(); i++){
+        objects[i]=x[i];
+    }
+   
+    /*size_t len = strlen(x);
+    resize(len);
 
-    for (size_t i = 0; i < size; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
         (*this)[i] = x[i];
+    } */
+}
+
+DSString::DSString(const DSString & rhs){
+    len = rhs.size();
+    for (size_t i = 0; i < len; ++i)
+    {
+        (*this)[i] = rhs[i];
     }
 }
 
+DSString::~DSString(){
+
+}
 
 DSString &DSString::operator=(const char *rhs)
 {
@@ -35,13 +54,16 @@ DSString DSString::operator+(const DSString &rhs) const
 {
     //cerr << *this << " + " << rhs << " not implemented!" << endl;
     DSString tmp;
-    size_t size = rhs.size()+this.size();
-    size_t oldsize = this.size();
-    this.resize(size);
+    size_t size = rhs.size()+ len;
+    tmp.resize(size);
 
-    for (size_t i = oldsize; i < size; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
-        (*this)[i] = rhs[i];
+        (tmp)[i] = *this[i];
+    }
+    for (size_t i = rhs.size(); i < size; ++i)
+    {
+        (tmp)[i] = rhs[i];
     }
     return tmp;
 }

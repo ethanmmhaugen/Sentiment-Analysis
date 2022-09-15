@@ -11,18 +11,13 @@ DSString::DSString(){
 
 DSString::DSString(const char *x)
 {
-    array = DSVector(strlen(x));
-    for(size_t i = 0; i<array.capacity(); i++){
-        objects[i]=x[i];
-    }
-   
-    /*size_t len = strlen(x);
-    resize(len);
+    size_t len = strlen(x);
+    
 
     for (size_t i = 0; i < len; ++i)
     {
-        (*this)[i] = x[i];
-    } */
+        this->push_back(x[i]);
+    } 
 }
 
 DSString::DSString(const DSString & rhs){
@@ -33,20 +28,17 @@ DSString::DSString(const DSString & rhs){
     }
 }
 
-DSString::~DSString(){
 
-}
-
-DSString &DSString::operator=(const char *rhs)
+DSString &DSString::operator=(const char* &rhs)
 {
     size_t size = strlen(rhs);
     resize(size);
 
     for (size_t i = 0; i < size; ++i)
     {
-        (*this)[i] = rhs[i];
+        this->push_back(rhs[i]);
     }
-
+    
     return *this;
 }
 
@@ -57,11 +49,11 @@ DSString DSString::operator+(const DSString &rhs) const
     size_t size = rhs.size()+ len;
     tmp.resize(size);
 
-    for (size_t i = 0; i < len; ++i)
+    for (size_t i = 0; i < len; i++)
     {
-        (tmp)[i] = *this[i];
+        (tmp)[i] = (*this)[i];
     }
-    for (size_t i = rhs.size(); i < size; ++i)
+    for (size_t i = len; i < size; i++)
     {
         (tmp)[i] = rhs[i];
     }
@@ -136,8 +128,11 @@ DSString DSString::substring(size_t start, size_t numChars) const
 const char *DSString::c_str() const
 {
     // I would need to keep an extra `\0` to make this work.
-    cerr << "Not implemented!" << endl;
-    return nullptr;
+    char* c_str{};
+    for(size_t i = 0; i<len; i++){
+        c_str[i] = data[i];
+    }
+    return c_str;
 }
 
 /**

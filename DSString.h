@@ -7,8 +7,8 @@ class DSString: public DSVector<char>
 {
 
 private:
-    char * data;  // a pointer to a character array containing the string
-    int len;      // the length of the string 
+    DSVector<char> data;  // a pointer to a character array containing the string
+    size_t len;      // the length of the string 
 public:
     /**
      * Make sure you implement the rule of 3 and use proper memory management.
@@ -22,6 +22,10 @@ public:
     DSString(const DSString & rhs);  // copy constructor
     ~DSString() = default;  // destructor
     DSString &operator=(const char* &);
+    DSString &operator=(const DSString &);
+
+    size_t getLen();
+    
 
     // you can also implement the move versions for the big 5 (C+11)
 

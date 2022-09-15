@@ -12,17 +12,19 @@ DSString::DSString(){
 DSString::DSString(const char *x)
 {
     size_t len = strlen(x);
+    resize(len);
     
-
     for (size_t i = 0; i < len; ++i)
     {
         this->push_back(x[i]);
     } 
 }
 
-DSString::DSString(const DSString & rhs){
-    len = rhs.size();
-    for (size_t i = 0; i < len; ++i)
+DSString::DSString(const DSString &rhs){
+    size_t size = rhs.size();
+    (*this).resize(size);
+    
+    for (size_t i = 0; i < size; ++i)
     {
         (*this)[i] = rhs[i];
     }
@@ -36,10 +38,25 @@ DSString &DSString::operator=(const char* &rhs)
 
     for (size_t i = 0; i < size; ++i)
     {
-        this->push_back(rhs[i]);
+        (*this)[i] = rhs[i];
     }
-    
     return *this;
+}
+
+DSString &DSString::operator=(const DSString& rhs)
+{
+    
+    resize(rhs.size());
+
+    for (size_t i = 0; i < rhs.size(); ++i)
+    {
+        (*this)[i] = rhs[i];
+    }
+    return *this;
+}
+
+size_t DSString::getLen(){
+    return len;
 }
 
 DSString DSString::operator+(const DSString &rhs) const
@@ -128,11 +145,11 @@ DSString DSString::substring(size_t start, size_t numChars) const
 const char *DSString::c_str() const
 {
     // I would need to keep an extra `\0` to make this work.
-    char* c_str{};
+    char* tmp = nullptr;
     for(size_t i = 0; i<len; i++){
-        c_str[i] = data[i];
+        tmp[i] = data[i];
     }
-    return c_str;
+    return tmp;
 }
 
 /**

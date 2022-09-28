@@ -7,17 +7,15 @@
 #include <stdexcept>
 
 DSString::DSString(){
+    string = nullptr;
 }
 
 DSString::DSString(const char *x)
 {
-    size_t len = strlen(x);
-    resize(len);
-    
-    for (size_t i = 0; i < len; ++i)
-    {
-        this->push_back(x[i]);
-    } 
+    this->string = new  char[strlen(x)+1];
+    strcpy(this->string, x);
+    this->string[strlen(x)]='\0';
+
 }
 
 DSString::DSString(const DSString &rhs){

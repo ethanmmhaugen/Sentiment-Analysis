@@ -1,13 +1,13 @@
 #ifndef DSSTRING_H
 #define DSSTRING_H
-#include "DSVector.h"
 #include <iostream>
+#include <cstring>
+#include <set>
 
-class DSString: public DSVector<char>
-{
+class DSString {
 
 private:
-    DSVector<char> data;  // a pointer to a character array containing the string
+    char* string;  // a pointer to a character array containing the string
     size_t len;      // the length of the string 
 public:
     /**
@@ -21,27 +21,32 @@ public:
     // rule of 3
     DSString(const DSString & rhs);  // copy constructor
     ~DSString() = default;  // destructor
-    DSString &operator=(const char* &);
+    DSString &operator=(const char*);
     DSString &operator=(const DSString &);
 
-    size_t getLen();
+    void tokenize(std::vector<DSString>& line, std::set<DSString>& rhs);
     
 
     // you can also implement the move versions for the big 5 (C+11)
 
     // implement some useful methods
 
+    int getLength();
+
     /**
      * Overloaded non-modifying string concat
      */
-    DSString operator+(const DSString &) const;
+    DSString operator+(const DSString &);
+    //DSString operator+(const char* line);
 
     /**
      * Standard relational operators to compare and order your strings.  
      * Feel free to add additional.
      **/
-    bool operator==(const DSString &) const;
+    bool operator==(const DSString);
+    //bool operator==(const char*)const;
     bool operator<(const DSString &) const;
+    bool operator>(const DSString &) const;
 
     /**
      * The substring method returns a string object that contains a
@@ -53,6 +58,8 @@ public:
      * @return a DSString object containing the requested substring
      **/
     DSString substring(size_t start, size_t numChars) const;
+
+    char& operator[] (const int);
 
     /**
      * the c_str function returns a pointer a null-terminated c-string holding the
@@ -73,6 +80,9 @@ public:
     // You are free to add more functionality to the class.  For example,
     // you may want to add a find(...) function that will search for a
     // substring within a string or a function that breaks a string into words.
+
+    DSString& addSentiment(int senti);
+    DSString& lower();
 };
 
 #endif

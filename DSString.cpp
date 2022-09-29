@@ -19,97 +19,92 @@ DSString::DSString(const char *x)
 }
 
 DSString::DSString(const DSString &rhs){
-    size_t size = rhs.size();
-    (*this).resize(size);
-    
-    for (size_t i = 0; i < size; ++i)
-    {
-        (*this)[i] = rhs[i];
-    }
+    this-> string = new char[strlen(rhs.string)+1];
+    strcpy(this-> string, rhs.string);
+    this->string[strlen(rhs.string)]='\0';
 }
 
 
-DSString &DSString::operator=(const char* &rhs)
+DSString &DSString::operator=(const char* rhs)
 {
-    size_t size = strlen(rhs);
-    resize(size);
-
-    for (size_t i = 0; i < size; ++i)
-    {
-        (*this)[i] = rhs[i];
-    }
+    this->string = new char[strlen(rhs)+1];
+    strcpy(this->string, rhs);
+    this->string[strlen(rhs)]='\0';
     return *this;
 }
 
 DSString &DSString::operator=(const DSString& rhs)
 {
-    
-    resize(rhs.size());
-
-    for (size_t i = 0; i < rhs.size(); ++i)
-    {
-        (*this)[i] = rhs[i];
-    }
+    this->string = new char[strlen(rhs)+1];
+    strcpy(this->string, rhs.string);
+    this->string[strlen(rhs.string)]='\0';
     return *this;
 }
 
-size_t DSString::getLen(){
-    return len;
+size_t DSString::getLength(){
+    size_t length = strlen(string);
+    return length;
 }
 
-DSString DSString::operator+(const DSString &rhs) const
+DSString DSString::operator+(const DSString &rhs)
 {
-    //cerr << *this << " + " << rhs << " not implemented!" << endl;
-    DSString tmp;
-    size_t size = rhs.size()+ len;
-    tmp.resize(size);
-
-    for (size_t i = 0; i < len; i++)
-    {
-        (tmp)[i] = (*this)[i];
-    }
-    for (size_t i = len; i < size; i++)
-    {
-        (tmp)[i] = rhs[i];
-    }
-    return tmp;
+    DSString x;
+    x.string = new char[strlen(rhs.string)+strlen(this->string)+1];
+    strcat(x.string, this -> string);
+    strcat(x.string, rhs.string);
+    x.string[strlen(x.string)]='\0';
+    return x;
 }
 
 /**
  * Standard relational operators.  Feel free to add additional.
  **/
-bool DSString::operator==(const DSString &rhs) const
+bool DSString::operator==(const DSString &rhs)
 {
-    cerr << "(calling: " << *this << " == " << rhs << ") ";
-
-    if (size() != rhs.size())
+    int compare;
+    compare = strcmp(this->string, rhs.string);
+    if (compare == 0){
+        return true;
+    }
+    else{
         return false;
+    }
+}
 
-    for (size_t i = 0; i < size(); ++i)
-        if ((*this)[i] != rhs[i])
-            return false;
-
-    return true;
+bool DSString::operator==(const char* rhs)
+{
+    int compare;
+    compare = strcmp(this->string, rhs);
+    if (compare == 0){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 bool DSString::operator<(const DSString &rhs) const
 {
-    cerr << "(calling: " << *this << " < " << rhs << ") " << endl;
-
-    size_t compSize = min(size(), rhs.size());
-    for (size_t i = 0; i < compSize; ++i)
-    {
-        if ((*this)[i] < rhs[i])
-            return true;
-        if ((*this)[i] > rhs[i])
-            return false;
-    }
-
-    // all were the same so far. We define the shorter string as <
-    if (size() < rhs.size())
+    int compare;
+    compare = strcmp(this->string, rhs);
+    if(compare<0){
         return true;
+    }
+    else{
+        return false; 
+    }
+}
 
-    return false;
+bool DSString::operator>(const DSString &rhs) const
+{
+    int compare;
+    compare = strcmp(this->string, rhs);
+    if(compare>0){
+        return true;
+    }
+    else{
+        return false; 
+    }
 }
 
 /**
@@ -160,4 +155,26 @@ std::ostream &operator<<(std::ostream &out, const DSString &x)
         out << c;
 
     return out;
+}
+
+DSString& addSentiment(int senti){
+    DSString x;
+    x = new char[strlen(this->string)+2];
+    if(senti == 0){
+        x[0] = '0';
+    }
+    else if (senti == 4){
+        x[0] = '4';
+    }
+    x[1] = ',';
+
+    for(int i = 0; i<strlen(this->string); i++){
+        x[2+i]=string[i];
+    }
+    x.string[strlen(x.string)]='\0';
+    this->string = new char[strlen(x.string)];
+    for(int i =0; i<strlen(x.string);i++){
+        this->string[i]=x.string[i];
+    }
+    return *this;
 }

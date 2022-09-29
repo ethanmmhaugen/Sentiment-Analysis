@@ -21,7 +21,7 @@ public:
     // rule of 3
     DSString(const DSString & rhs);  // copy constructor
     ~DSString() = default;  // destructor
-    DSString &operator=(const char*);
+    DSString &operator=(const char* rhs);
     DSString &operator=(const DSString &);
 
     void tokenize(std::vector<DSString>& line, std::set<DSString>& rhs);
@@ -31,19 +31,20 @@ public:
 
     // implement some useful methods
 
-    int getLength();
+    size_t getLength();
 
     /**
      * Overloaded non-modifying string concat
      */
-    DSString operator+(const DSString &);
+    DSString operator+(const DSString &rhs);
     //DSString operator+(const char* line);
 
     /**
      * Standard relational operators to compare and order your strings.  
      * Feel free to add additional.
      **/
-    bool operator==(const DSString);
+    bool operator==(const DSString &rhs);
+    bool operator==(const char* rhs);
     //bool operator==(const char*)const;
     bool operator<(const DSString &) const;
     bool operator>(const DSString &) const;

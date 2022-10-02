@@ -5,10 +5,10 @@
 class word{
     private: 
 
-    DSString spell;
-    bool sentiment;
-    size_t posCount;
-    size_t negCount;
+    DSString myString;
+    int senti;
+    size_t positiveCount;
+    size_t negativeCount;
 
     public:
 
@@ -16,5 +16,15 @@ class word{
     word(DSString x);
     word(const word &rhs);
 
+    ~word()=default;
+
+    void setString(DSString x);
+    void setString(word x);
+    void setSenti(int sentiment);
+    void setSenti();
+
+    DSString getString();
+    int getSenti();
+
     
-}
+};

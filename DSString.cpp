@@ -15,7 +15,6 @@ DSString::DSString(const char *x)
     this->string = new  char[strlen(x)+1];
     strcpy(this->string, x);
     this->string[strlen(x)]='\0';
-
 }
 
 DSString::DSString(const DSString &rhs){
@@ -35,7 +34,7 @@ DSString &DSString::operator=(const char* rhs)
 
 DSString &DSString::operator=(const DSString& rhs)
 {
-    this->string = new char[strlen(rhs)+1];
+    this->string = new char[strlen(rhs.string)+1];
     strcpy(this->string, rhs.string);
     this->string[strlen(rhs.string)]='\0';
     return *this;
@@ -138,11 +137,7 @@ DSString DSString::substring(size_t start, size_t numChars) const
 const char *DSString::c_str() const
 {
     // I would need to keep an extra `\0` to make this work.
-    char* tmp = nullptr;
-    for(size_t i = 0; i<len; i++){
-        tmp[i] = data[i];
-    }
-    return tmp;
+    return this->string;
 }
 
 /**

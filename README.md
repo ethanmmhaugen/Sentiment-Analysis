@@ -211,24 +211,24 @@ Complete this section and commit your changes. Keep your answers short and preci
 
 1. How do you classify a new tweet? Give a short description of the main steps.
 
-    > Your answer
+    > My training algorithm stores a vector of words that are all assigned positive or negative value based on the training data. Each new tweet has the number of positive and negative words summed up, whichever is greater determines where the tweet gets classified
 
 2. How long did your code take for training and what is the time complexity of your training implementation (Big-Oh notation)? Explain why. 
 
-   > Your answer
+   > My code took a couple of minutes for training. The big O notation is N^2 * K where N is number of words and K is number of tweets. Since it loops through each line (number of tweets) and each word but ALSO compares each word to the dictionary (having to search through the words already added) I believe that is the worst case scenario
 
 3. How long did your code take for classification and what is the time complexity of your classification implementation (Big-Oh notation)? Explain why.
 
-   > Your answer
+   > The big O notation is N*K*D with N being number of tweets, K being number of words in the tweets, and D being number of words in the dictionary. This took longer, at least 10 minutes.
 
 4. How do you know that you use proper memory management? That is that you do not have
    a memory leak?
 
-   > Your answer
+   > I used valgrind to moniter my memory usage
 
 5. What was the most challenging part of the assignment?
 
-   > Your answer
+   > The string class, getting the ball rolling was the hardest part
 
 ## Grading Rubric
 

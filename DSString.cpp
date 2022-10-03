@@ -153,24 +153,4 @@ std::ostream &operator<<(std::ostream &out, const DSString &x)
     return out;
 }
 
-DSString& addSentiment(int senti){
-    DSString x;
-    x = new char[strlen(this->string)+2];
-    if(senti == 0){
-        x[0] = '0';
-    }
-    else if (senti == 4){
-        x[0] = '4';
-    }
-    x[1] = ',';
 
-    for(int i = 0; i<strlen(this->string); i++){
-        x[2+i]=string[i];
-    }
-    x.string[strlen(x.string)]='\0';
-    this->string = new char[strlen(x.string)];
-    for(int i =0; i<strlen(x.string);i++){
-        this->string[i]=x.string[i];
-    }
-    return *this;
-}

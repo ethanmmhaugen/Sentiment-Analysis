@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DSString.h"
+#include "DSVector.h"
 
 class word{
     private: 
@@ -24,9 +25,12 @@ class word{
     void setSenti();
     void incPos();
     void incNeg();
+    void reset();
 
     DSString getString();
     int getSenti();
 
+    word& operator=(const DSString &rhs);
+    word& operator=(const char* &rhs);
     
 };

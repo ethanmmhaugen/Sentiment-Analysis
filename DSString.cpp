@@ -82,22 +82,23 @@ bool DSString::operator==(const char* rhs)
     }
 }
 
-bool DSString::operator<(const DSString &rhs) const
+bool DSString::operator<(const DSString &rhs)
 {
-    int compare;
-    compare = strcmp(this->string, rhs);
-    if(compare<0){
-        return true;
-    }
-    else{
-        return false; 
+    size_t newSize = min(size(), rhs.size());
+    for (size_t i = 0; i<newSize; ++i){
+        if((*this)[i]<rhs[i]){
+            return true;
+        }
+        if((*this)[i]>rhs[i]){
+            return false;
+        }
     }
 }
 
 bool DSString::operator>(const DSString &rhs) const
 {
     int compare;
-    compare = strcmp(this->string, rhs);
+    compare = strcmp(this->string, rhs.string);
     if(compare>0){
         return true;
     }

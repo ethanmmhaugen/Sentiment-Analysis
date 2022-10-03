@@ -22,6 +22,8 @@ class word{
     void setString(word x);
     void setSenti(int sentiment);
     void setSenti();
+    void incPos();
+    void incNeg();
 
     DSString getString();
     int getSenti();

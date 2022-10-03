@@ -10,9 +10,8 @@ using namespace std;
 
 int main()
 { 
-DSVector<word> disctionary;
+DSVector<word> dictionary;
 ifstream file("train_dataset_20k.csv");
-
 word tmp;
 
 for(int i=0; i<10; i++){
@@ -40,7 +39,7 @@ for(int i=0; i<10; i++){
             dictionary.push_back(tmp);
         }
         else {
-            (tmpSent ==4) ? dictionary[index].addPositive():dictionary[index].addNegative();
+            (tmpSent ==4) ? dictionary[index].incPos():dictionary[index].incNeg();
         }
         word = strtok(buff, " ");
 
@@ -49,8 +48,8 @@ for(int i=0; i<10; i++){
 }
 
 for(auto &words : dictionary){
-    cout << words.getWord().c_str() << endl;
-    words.calcSentiment();
+    cout << words.getString().c_str() << endl;
+    words.setSenti();
     if(words.getSenti()==4){
         cout << "pos"<<endl;
     }
@@ -62,7 +61,7 @@ for(auto &words : dictionary){
 
 cout<<"Training Done!!!!!!!"<<endl;
 
-DSVector<tweet> tweets;
+DSVector<word> tweets;
 
 ifstream test("data/test_dataset_10k.csv");
 if(!test.is_open()){
@@ -72,9 +71,9 @@ if(!test.is_open()){
 word temp2;
 word tweet;
 
-for(int i = 0; i<looper; ++i){
+for(int i = 0; i<1000; ++i){
     char buff[1000];
-    test.getLine(buff, 1000, ',');
+    test.getline(buff, 1000, ',');
 
     char* word = strtok(buff, " !@#$%^&*()");
     int posCount = 0;
@@ -87,7 +86,7 @@ for(int i = 0; i<looper; ++i){
             if(dictionary[index].getSenti() == 4){
                 posCount++;
             }
-            else if (dictionary[index].getSenti() == 0{
+            if(dictionary[index].getSenti() == 0){
                 negCount++;
             }
         }
@@ -96,16 +95,16 @@ for(int i = 0; i<looper; ++i){
     }
 
     if(posCount>negCount){
-        tw.setSenti(4);
+        tweet.setSenti(4);
     }
     else if (negCount>posCount){
-        tw.setSenti(0);
+        tweet.setSenti(0);
     }
     else if (posCount == negCount){
-        tw.setSenti(-1);
+        tweet.setSenti(-1);
     }
 
-    tweets.push_back(tw);
+    tweets.push_back(tweet);
 
 
 }
@@ -113,18 +112,18 @@ for(int i = 0; i<looper; ++i){
 test.close();
 
 ifstream checker;
-checker.open();
+checker.open("test_dataset_sentiment_10k.csv");
 
 if(!checker.is_open()){
     cout << "File is not open" << endl;
 }
 
-charfl[50];
+char fl[50];
 checker.getline(fl,50,'\n');
 
 DSVector<int> correct;
 
-for(int i = 0; i<looper; ++i){
+for(int i = 0; i<1000; ++i){
     checker.getline(fl,50,',');
     correct.push_back(static_cast<int>(strtol(fl, nullptr,10)));
     checker.getline(fl,50,'\n');
@@ -138,7 +137,7 @@ for(size_t i = 0; i<correct.size();++i){
         counter++;
     }
 }
-double accuracy = counter/looper;
+double accuracy = counter/1000;
 cout << accuracy << endl;
 
 

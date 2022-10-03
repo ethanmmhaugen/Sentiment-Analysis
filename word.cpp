@@ -49,3 +49,9 @@ int word::getSenti(){
     return senti;
 }
 
+void word::incPos(){
+    positiveCount++;
+}
+void word::incNeg(){
+    negativeCount++;
+}

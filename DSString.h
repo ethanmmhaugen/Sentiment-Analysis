@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstring>
 #include <set>
+#include "DSVector.h"
 
 class DSString {
 
@@ -23,8 +24,6 @@ public:
     ~DSString() = default;  // destructor
     DSString &operator=(const char* rhs);
     DSString &operator=(const DSString &);
-
-    void tokenize(std::vector<DSString>& line, std::set<DSString>& rhs);
     
 
     // you can also implement the move versions for the big 5 (C+11)
@@ -46,8 +45,8 @@ public:
     bool operator==(const DSString &rhs);
     bool operator==(const char* rhs);
     //bool operator==(const char*)const;
-    bool operator<(const DSString &) const;
-    bool operator>(const DSString &) const;
+    bool operator<(const DSString &);
+    bool operator>(const DSString &);
 
     /**
      * The substring method returns a string object that contains a

@@ -2,6 +2,24 @@
 
 using namespace std;
 
+void testing(){
+    char chars[] = {"hello"};
+    DSString word(chars);
+
+
+    DSString word2(word);
+
+    DSVector<DSString> vector;
+    vector.push_back(word);
+    vector.push_back(word);
+    vector.push_back(word2+word);
+    cout << vector.size() << " " << vector[2] << endl;
+    DSVector<DSString> vector2(vector);
+    cout << vector2.size() << " " << vector2[1] << endl;
+    cout << vector.empty() << " " << vector.capacity() << endl;
+    cout << vector.size() << " " << vector[2] << endl;
+}
+
 int main(){
     /*myModel done;
 
@@ -11,14 +29,6 @@ int main(){
     tweets = done.test(dictionary);
     done.check(tweets);
     */
-    char chars[] = {"hello"};
-    DSString word(chars);
-    cout << word;
-    cout << word.substring(2,3) << endl;
-
-    DSString word2(word);
-    cout << word2;
-    cout << (word==word2) << endl;
-    cout << (word+word2);
+    testing();
     return 0;
 }

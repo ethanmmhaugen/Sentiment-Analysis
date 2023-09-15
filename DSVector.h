@@ -115,14 +115,14 @@ public:
     if (newCapacity < theSize)
       return;
 
+
     Object *newArray = new Object[newCapacity];
-    for (size_t k = 0; k < theSize; ++k)
-      newArray[k] = objects[k];
+    std::copy(objects, objects+theSize, newArray);
+    theCapacity = newCapacity;
 
     delete[] objects;
     objects = newArray;
-    theCapacity = newCapacity;
-  }
+ }
 
   // resize the vector
   void resize(size_t newSize)
@@ -174,5 +174,12 @@ public:
     return &objects[size()];
   }
 };
+
+template<typename Object>
+DSVector<Object>::DSVector() {
+    objects = nullptr;
+    theSize = 0;
+    theCapacity = 0;
+}
 
 #endif

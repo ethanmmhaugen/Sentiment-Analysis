@@ -13,12 +13,14 @@ DSString::DSString(){
 DSString::DSString(const char *x)
 {
     this->string = new  char[strlen(x)+1];
+    this->len = strlen(x);
     strcpy(this->string, x);
     this->string[strlen(x)]='\0';
 }
 
 DSString::DSString(const DSString &rhs){
     this-> string = new char[strlen(rhs.string)+1];
+    this->len = strlen(rhs.string);
     strcpy(this-> string, rhs.string);
     this->string[strlen(rhs.string)]='\0';
 }
@@ -40,18 +42,16 @@ DSString &DSString::operator=(const DSString& rhs)
     return *this;
 }
 
-size_t DSString::getLength(){
+size_t DSString::getLength() const{
     size_t length = strlen(string);
     return length;
 }
 
 DSString DSString::operator+(const DSString &rhs)
 {
-    DSString x;
-    x.string = new char[strlen(rhs.string)+strlen(this->string)+1];
-    strcat(x.string, this -> string);
+    DSString x(*this);
     strcat(x.string, rhs.string);
-    x.string[strlen(x.string)]='\0';
+    x.len = strlen(x.string);
     return x;
 }
 
@@ -82,20 +82,19 @@ bool DSString::operator==(const char* rhs)
     }
 }
 
-bool DSString::operator<(const DSString &rhs)
+bool DSString::operator<(DSString rhs)
 {
-    size_t newSize = min(size(), rhs.size());
-    for (size_t i = 0; i<newSize; ++i){
-        if((*this)[i]<rhs[i]){
-            return true;
-        }
-        if((*this)[i]>rhs[i]){
-            return false;
-        }
+    int compare;
+    compare = strcmp(this->string, rhs.string);
+    if(compare<0){
+        return true;
+    }
+    else{
+        return false;
     }
 }
 
-bool DSString::operator>(const DSString &rhs) const
+bool DSString::operator>(const DSString &rhs)
 {
     int compare;
     compare = strcmp(this->string, rhs.string);
@@ -118,9 +117,9 @@ bool DSString::operator>(const DSString &rhs) const
  **/
 DSString DSString::substring(size_t start, size_t numChars) const
 {
-    if (start + numChars > size())
+    if (start + numChars > len) {
         throw std::runtime_error("out of bounds!");
-
+    }
     DSString tmp;
     tmp.resize(numChars);
 
@@ -147,10 +146,26 @@ const char *DSString::c_str() const
  **/
 std::ostream &operator<<(std::ostream &out, const DSString &x)
 {
-    for (const auto &c : x)
-        out << c;
+    for (size_t i = 0; i<x.getLength(); i++){
+        out << x[i];
+    }
 
     return out;
+}
+
+char &DSString::operator[](const size_t num) const {
+    if(string != nullptr){
+        return string[num];
+    }
+    else{
+        throw std::runtime_error("String doesn't exist!");
+    }
+}
+
+void DSString::resize(size_t length) {
+    delete[] string;
+    string = new char[length+1];
+    string[length] = '\0';
 }
 
 

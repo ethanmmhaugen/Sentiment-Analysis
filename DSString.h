@@ -29,8 +29,8 @@ public:
     // you can also implement the move versions for the big 5 (C+11)
 
     // implement some useful methods
-
-    size_t getLength();
+    void resize(size_t length);
+    size_t getLength() const;
 
     /**
      * Overloaded non-modifying string concat
@@ -45,7 +45,7 @@ public:
     bool operator==(const DSString &rhs);
     bool operator==(const char* rhs);
     //bool operator==(const char*)const;
-    bool operator<(const DSString &);
+    bool operator<(DSString);
     bool operator>(const DSString &);
 
     /**
@@ -59,7 +59,7 @@ public:
      **/
     DSString substring(size_t start, size_t numChars) const;
 
-    char& operator[] (const int);
+    char& operator[] (const size_t num) const;
 
     /**
      * the c_str function returns a pointer a null-terminated c-string holding the
@@ -80,8 +80,6 @@ public:
     // You are free to add more functionality to the class.  For example,
     // you may want to add a find(...) function that will search for a
     // substring within a string or a function that breaks a string into words.
-
-    DSString& lower();
 };
 
 #endif

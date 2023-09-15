@@ -17,11 +17,7 @@ protected:
 
 public:
   // Create an empty DSVector
-  explicit DSVector(size_t initSize = 0)
-      : theSize{initSize}, theCapacity{initSize}
-  {
-    objects = new Object[theCapacity];
-  }
+  DSVector();
 
   // C++11 initializer list with {}
   DSVector(const initializer_list<Object> &v)

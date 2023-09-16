@@ -1,8 +1,8 @@
 #pragma once
-#include "DSVector.h";
-#include "word.h";
-#include "tweet.h";
-#include <fstream>;
+#include "DSVector.h"
+#include "word.h"
+#include "tweet.h"
+#include <fstream>
 
 class myModel{
 

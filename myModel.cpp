@@ -16,7 +16,7 @@ DSVector<word> myModel::train(DSVector<word> &dictionary){
     cout << "Start Training" << endl;
 
     //encompassing while loop to continue until end of the file
-    while(file.getline()){
+    while(!file.eof()){
         //First we get the sentiment and store that for later
         char buffer[1000];
         int senti;
@@ -99,7 +99,7 @@ DSVector<tweet> myModel::test(DSVector<word> &dictionary){
     tweet twitter;
 
     //while loop to read the file
-    while(file.getline()){
+    while(!file.eof()){
         char buffer[1000];
         file.getline(buffer, 1000, ',');
         twitter.setId(strtol(buffer, nullptr, 10));
@@ -159,7 +159,7 @@ void myModel::check(DSVector<tweet> &tweets){
     //save into an answer vector
     DSVector<int> ans;
     double ansCount = 0;
-    while(file.getline()){
+    while(!file.eof()){
         file.getline(line, 100, ',');
         ans.push_back(strtol(line, nullptr, 10));
         file.getline(line, 100, '\n');

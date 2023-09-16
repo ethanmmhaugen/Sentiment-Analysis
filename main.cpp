@@ -21,14 +21,14 @@ void testing(){
 }
 
 int main(){
-    /*myModel done;
+    myModel done;
 
     DSVector<word> dictionary;
     DSVector<tweet> tweets;
     done.train(dictionary);
     tweets = done.test(dictionary);
     done.check(tweets);
-    */
-    testing();
+
+    //testing();
     return 0;
 }

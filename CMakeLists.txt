@@ -31,7 +31,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 add_compile_options(-Wall -Wextra -pedantic)
 
 # Create the executable for sorting
-add_executable(sentiment main.cpp DSString.cpp)
+add_executable(sentiment main.cpp DSString.cpp myModel.cpp word.cpp tweet.cpp)
 
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 

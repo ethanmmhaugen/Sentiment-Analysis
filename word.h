@@ -6,7 +6,7 @@
 class word{
     private: 
 
-    DSString myString;
+    DSString* myString;
     int senti;
     size_t positiveCount;
     size_t negativeCount;
@@ -14,21 +14,22 @@ class word{
     public:
 
     word();
-    word(DSString x);
+    word(const DSString& x);
     word(const word &rhs);
 
     ~word()=default;
 
-    void setString(DSString x);
+    void setString(const DSString& x);
     void setString(word x);
     void setSenti(int sentiment);
     void setSenti();
+    void calcSenti();
     void incPos();
     void incNeg();
     void reset();
 
     DSString getString();
-    int getSenti();
+    int getSenti() const;
 
     word& operator=(const DSString &rhs);
     word& operator=(const char* &rhs);

@@ -1,26 +1,28 @@
 #include "word.h"
 
 word::word(){
-    myString = nullptr;
     positiveCount = 0;
     negativeCount = 0;
+    myString = nullptr;
 }
 
-word::word(DSString x){
-    myString=x.c_str();
+word::word(const DSString& x){
+    delete myString;
+    myString = new DSString(x);
     positiveCount = 0;
     negativeCount = 0;
 
 }
 
 word::word(const word &rhs){
-    myString = rhs.myString;
-    positiveCount = 0;
-    negativeCount = 0;
+    myString = new DSString(*(rhs.myString));
+    positiveCount = rhs.positiveCount;
+    negativeCount = rhs.negativeCount;
 }
 
-void word::setString(DSString x){
-    myString = x;
+void word::setString(const DSString& x){
+    delete myString;
+    myString = new DSString(x);
 }
 
 void word::setString(word x){
@@ -42,10 +44,10 @@ void word::setSenti(){
 }
 
 DSString word::getString(){
-    return myString;
+    return *myString;
 }
 
-int word::getSenti(){
+int word::getSenti() const{
     return senti;
 }
 
@@ -70,20 +72,20 @@ void word::calcSenti(){
 }
 
 word &word::operator=(const DSString &rhs){
-    myString = rhs;
+    delete myString;
+    myString = new DSString(rhs);
     return *this;
 }
 
 word &word::operator=(const char* &rhs){
-    if(rhs == nullptr){
+    if (myString != nullptr) {
+        delete myString;
         myString = nullptr;
     }
-    else{
-        this->myString = new char[strlen(rhs)+1];
-        for(int i = 0; i<myString.size(); i++){
-            myString[i] = rhs[i];
-        }
-        myString[myString.size()]='\0';
+
+    if (rhs != nullptr) {
+        myString = new DSString(rhs);
     }
+
     return *this;
 }

@@ -1,7 +1,7 @@
 #include "tweet.h"
 
 tweet::tweet(){
-
+    len = 0;
 }
 
 tweet::tweet(DSString x){
@@ -34,4 +34,11 @@ int tweet::getSentiment(){
 
 size_t tweet::getId(){
     return id;
+}
+
+tweet &tweet::operator=(const tweet &rhs) {
+    data = DSString(rhs.data);
+    sentiment = rhs.sentiment;
+    id = rhs.id;
+    return *this;
 }

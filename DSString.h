@@ -21,7 +21,10 @@ public:
     
     // rule of 3
     DSString(const DSString & rhs);  // copy constructor
-    ~DSString() = default;  // destructor
+    ~DSString(){
+        delete[] string;
+
+    }  // destructor
     DSString &operator=(const char* rhs);
     DSString &operator=(const DSString &);
     
@@ -45,7 +48,7 @@ public:
     bool operator==(const DSString &rhs);
     bool operator==(const char* rhs);
     //bool operator==(const char*)const;
-    bool operator<(DSString);
+    bool operator<(const DSString&);
     bool operator>(const DSString &);
 
     /**

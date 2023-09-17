@@ -25,8 +25,9 @@ int main(){
 
     DSVector<word> dictionary;
     DSVector<tweet> tweets;
-    done.train(dictionary);
-    tweets = done.test(dictionary);
+    unordered_map<string, int> visited;
+    done.train(dictionary, visited);
+    tweets = done.test(dictionary, visited);
     done.check(tweets);
 
     //testing();

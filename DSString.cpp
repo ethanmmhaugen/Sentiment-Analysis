@@ -28,17 +28,19 @@ DSString::DSString(const DSString &rhs){
 
 DSString &DSString::operator=(const char* rhs)
 {
-    this->string = new char[strlen(rhs)+1];
-    strcpy(this->string, rhs);
-    this->string[strlen(rhs)]='\0';
+    delete[] string;
+    string = new char[strlen(rhs)+1];
+    strcpy(string, rhs);
+    string[strlen(rhs)]='\0';
     return *this;
 }
 
 DSString &DSString::operator=(const DSString& rhs)
 {
-    this->string = new char[strlen(rhs.string)+1];
-    strcpy(this->string, rhs.string);
-    this->string[strlen(rhs.string)]='\0';
+    delete[] string;
+    string = new char[strlen(rhs.string)+1];
+    strcpy(string, rhs.string);
+    string[strlen(rhs.string)]='\0';
     return *this;
 }
 
@@ -61,7 +63,7 @@ DSString DSString::operator+(const DSString &rhs)
 bool DSString::operator==(const DSString &rhs)
 {
     int compare;
-    compare = strcmp(this->string, rhs.string);
+    compare = strcmp(string, rhs.string);
     if (compare == 0){
         return true;
     }
@@ -73,7 +75,7 @@ bool DSString::operator==(const DSString &rhs)
 bool DSString::operator==(const char* rhs)
 {
     int compare;
-    compare = strcmp(this->string, rhs);
+    compare = strcmp(string, rhs);
     if (compare == 0){
         return true;
     }
@@ -82,10 +84,10 @@ bool DSString::operator==(const char* rhs)
     }
 }
 
-bool DSString::operator<(DSString rhs)
+bool DSString::operator<(const DSString& rhs)
 {
     int compare;
-    compare = strcmp(this->string, rhs.string);
+    compare = strcmp(string, rhs.string);
     if(compare<0){
         return true;
     }
@@ -97,7 +99,7 @@ bool DSString::operator<(DSString rhs)
 bool DSString::operator>(const DSString &rhs)
 {
     int compare;
-    compare = strcmp(this->string, rhs.string);
+    compare = strcmp(string, rhs.string);
     if(compare>0){
         return true;
     }
@@ -121,6 +123,7 @@ DSString DSString::substring(size_t start, size_t numChars) const
         throw std::runtime_error("out of bounds!");
     }
     DSString tmp;
+    delete tmp.string;
     tmp.resize(numChars);
 
     for (size_t i = 0; i < numChars; ++i)
@@ -134,10 +137,22 @@ DSString DSString::substring(size_t start, size_t numChars) const
  * the c_str function returns a null-terminated c-string holding the
  * contents of this object.
  **/
-const char *DSString::c_str() const
+const char* DSString::c_str() const
 {
-    // I would need to keep an extra `\0` to make this work.
-    return this->string;
+    if (string != nullptr)
+    {
+        size_t length = strlen(string);
+        char* cstr = new char[length + 1];
+        strcpy(cstr, string);
+        return cstr;
+    }
+    else
+    {
+        // Handle the case where the string is nullptr (empty string)
+        char* cstr = new char[1];
+        cstr[0] = '\0';
+        return cstr;
+    }
 }
 
 /**

@@ -21,6 +21,8 @@ class tweet{
         void setSentiment(int x);
         void setId(size_t x);
 
+        tweet &operator=(const tweet &rhs);
+
         int getSentiment();
         size_t getId();
 

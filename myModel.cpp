@@ -1,88 +1,98 @@
 #include "myModel.h"
 #include <ostream>
 
-DSVector<word> myModel::train(DSVector<word> &dictionary){
-    
-    //opening the file and checking that the name is correct
+DSVector<word> myModel::train(DSVector<word> &dictionary, unordered_map<string, int>& visited) {
+    // Opening the file and checking that the name is correct
     ifstream file;
     file.open("data/train_dataset_20k.csv");
-    if(!file.is_open()){
-        cout<< "Houston, we have a problem" << endl;
+    if (!file.is_open()) {
+        cout << "Houston, we have a problem" << endl;
     }
 
-    //This clears out the line with the headers
+    // This clears out the line with the headers
     char line[100];
-    file.getline(line,100,'\n');
+    file.getline(line, 100, '\n');
     cout << "Start Training" << endl;
 
-    //encompassing while loop to continue until end of the file
-    while(!file.eof()){
-        //First we get the sentiment and store that for later
-        char buffer[1000];
+    char* buffer = new char[1000];
+    char* tok;
+    int count = 0;
+
+    // Encompassing while loop to continue until end of the file
+    while (!file.eof()) {
+        // First, we get the sentiment and store that for later
+        if (count == 119) {
+            count++;
+        }
+        delete[] buffer; // Deallocate the previous buffer
+        buffer = new char[1000];
         int senti;
         file.getline(buffer, 1000, ',');
-        senti = buffer[0]-'0';
+        senti = buffer[0] - '0';
 
-        //This skips the ID, username, and the other useless columns (at least for this project)
-        for(int i = 0; i<4; i++){
-            file.getline(buffer,1000,',');
+        // This skips the ID, username, and the other useless columns (at least for this project)
+        for (int i = 0; i < 4; i++) {
+            file.getline(buffer, 1000, ',');
         }
 
-        //now we take the actual tweet and break it into individual words
+        // Now we take the actual tweet and break it into individual words
         file.getline(buffer, 1000);
         word tmp;
-        char* tok = strtok(buffer, " !@#$%^&*()_+-=,.?1234567890:;'/");
+        tok = strtok(buffer, " !@#$%^&*()_+-=,.?1234567890:;/");
 
-        //loop to assign words to my dictionary and increment their positive or negative counts
-        while (tok != nullptr){
-            DSString placeholder = tok;
-            tmp = placeholder;
-            tok = strtok(nullptr, " !@#$%^&*()_+-=,.?1234567890:;'/");
-            int index = static_cast<int>(search(dictionary,placeholder));
-            //excludes words with less than 3 letters
-            if (strlen(placeholder.c_str())<3){
+        // Loop to assign words to my dictionary and increment their positive or negative counts
+        while (tok != nullptr) {
+            tok = strtok(nullptr, " !@#$%^&*()_+-=,.?1234567890:;/");
+            if(tok == nullptr){
+                break;
+            }
+            DSString placeholder = DSString(tok);
+
+            tmp.setString(placeholder);
+            // Excludes words with less than 3 letters
+            if (placeholder.getLength() < 3) {
                 continue;
             }
+            string mapString = tok;
+            auto index = visited.find(mapString) != visited.end() ? visited.find(mapString) : visited.end();
 
-            //for not in dictionary, add it and increment once
-            if(index<0){
+            // For not in dictionary, add it and increment once
+            if (index == visited.end()) {
                 tmp.reset();
-                if(senti == 4){
+                if (senti == 4) {
                     tmp.incPos();
-                }
-                else{
+                } else {
                     tmp.incNeg();
                 }
                 dictionary.push_back(tmp);
+                visited[mapString] = dictionary.size() - 1;
             }
-            //if already in dictionary, just increment
-            else{
-                if(senti == 4){
-                    dictionary[index].incPos();
-                }
-                else{
-                    dictionary[index].incNeg();
+                // If already in dictionary, just increment
+            else {
+                if (senti == 4) {
+                    dictionary[index->second].incPos();
+                } else {
+                    dictionary[index->second].incNeg();
                 }
             }
-
         }
 
-
-
+        cout << count << endl;
+        count++;
     }
-    //close file and calculate sentiment for each word
+    delete[] buffer; // Deallocate the last buffer
+    // Close file and calculate sentiment for each word
     file.close();
-    for(int i = 0; i< dictionary.size(); i++){
+    for (int i = 0; i < dictionary.size(); i++) {
         dictionary[i].calcSenti();
     }
 
     cout << "Training Complete" << endl;
 
     return dictionary;
-
 }
 
-DSVector<tweet> myModel::test(DSVector<word> &dictionary){
+DSVector<tweet> myModel::test(DSVector<word> &dictionary, unordered_map<string, int>& visited){
     cout << "Let the testing BEGIN" << endl;
 
     //get the test file, set up vector to store tweets
@@ -108,13 +118,13 @@ DSVector<tweet> myModel::test(DSVector<word> &dictionary){
             file.getline(buffer, 1000, ',');
         }
 
-        char* tok = strtok(nullptr, " !@#$%^&*()_+-=,.?1234567890:;'/");
+        char* tok = strtok(nullptr, "!@#$%^&*()_+-=,.?1234567890:;'/");
         int posCount = 0;
         int negCount = 0;
-
+        twitter.setData(DSString(tok));
         //count positive and negative words
         while(tok != nullptr){
-            int index = search(dictionary, tok);
+            int index = visited.find(string(tok)) != visited.end() ? visited[string(tok)] : -1;
 
             if(index>-1){
                 if(dictionary[index].getSenti() == 4){
@@ -211,4 +221,6 @@ int myModel::search(DSVector<word> w, const DSString &find){
             return -1;
         }
     }
+
+    return -1;
 }
